@@ -156,6 +156,20 @@ contract Setup is ExtendedTest, IEvents {
     }
 
     function _setTokenAddrs() internal {
+        _setTokenAddrsArbitrum();
+    }
+
+    // arbitrum mainnet
+    function _setTokenAddrsArbitrum() internal {
+        tokenAddrs["USDT"] = 0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9;
+        tokenAddrs["DAI"] = 0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1;
+        tokenAddrs["USDC"] = 0xaf88d065e77c8cC2239327C5EDb3A432268e5831;
+
+        // see full list in _setTokenAddrsEthereum - add as needed
+    }
+
+    // ethereum mainnet addresses
+    function _setTokenAddrsEthereum() internal {
         tokenAddrs["WBTC"] = 0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599;
         tokenAddrs["YFI"] = 0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e;
         tokenAddrs["WETH"] = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;

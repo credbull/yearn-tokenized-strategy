@@ -10,11 +10,23 @@ out/
 # Docs
 docs/
 
-# Dotenv file
-.env
+# Dotenv files
+**/.env*
+!**/.env*.sample
 
 node_modules/
 .gas-snapshot
 
-yarn.lock
+# IDE files
+**/.idea
+**/*.iml
+
+# yarn files
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
 .DS_Store
