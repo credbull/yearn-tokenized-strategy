@@ -6,7 +6,7 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {IStrategyInterface} from "../../interfaces/IStrategyInterface.sol";
 
 import {ITokenizedStaker} from "@periphery/Bases/Staker/ITokenizedStaker.sol";
-import {SimpleTokenizedStaker} from "./SimpleTokenizedStaker.sol";
+import {SimpleTokenizedStaker} from "../../spikes/SimpleTokenizedStaker.sol";
 
 contract SimpleTokenizedStakerTest is Setup {
     ITokenizedStaker public staker;

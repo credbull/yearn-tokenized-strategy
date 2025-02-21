@@ -4,6 +4,7 @@
 update:; forge update
 build  :; forge build
 size  :; forge build --sizes
+anvil: anvil
 
 # storage inspection
 inspect :; forge inspect ${contract} storage-layout --pretty
@@ -11,6 +12,7 @@ inspect :; forge inspect ${contract} storage-layout --pretty
 # specify which fork to use. set this in our .env
 # if we want to test multiple forks in one go, remove this as an argument below
 FORK_URL := ${ARBI_RPC_URL} # BASE_RPC_URL, ETH_RPC_URL, ARBI_RPC_URL
+DEPLOY_SCRIPT ?= script/Deploy.s.sol:Deploy
 
 # if we want to run only matching tests, set that here
 test := test_
@@ -46,3 +48,21 @@ coverage-html:
 	@echo "Coverage report generated at coverage-report/index.html"
 
 clean  :; forge clean
+
+deploy-local:
+	$(MAKE) deploy RPC_URL=localhost EXTRA_FLAGS=
+
+deploy-arbSepolia:
+	$(MAKE) deploy RPC_URL=arbitrumSepolia EXTRA_FLAGS="--verify --slow"
+
+deploy:
+	@echo "Running deploy '$(RPC_URL)' for '$(ENVIRONMENT)' environment."
+	@rm -rf out && \
+	forge script $(DEPLOY_SCRIPT) --rpc-url $(RPC_URL) \
+		--private-key $(DEPLOYER_PRIVATE_KEY) --broadcast $(EXTRA_FLAGS) --non-interactive -vvv
+
+verify:
+	@echo "Running verify '$(RPC_URL)' for '$(ENVIRONMENT)' environment."
+	@rm -rf out && \
+	forge script $(DEPLOY_SCRIPT) --rpc-url $(RPC_URL) \
+		--private-key $(DEPLOYER_PRIVATE_KEY) --verify --resume --non-interactive -vvv

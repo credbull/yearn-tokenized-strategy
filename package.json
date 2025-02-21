@@ -12,6 +12,8 @@
         "format": "prettier --write 'src/**/*.(sol|json)'",
         "format:check": "prettier --check 'src/**/*.*(sol|json)'",
         "lint": "solhint 'src/**/*.sol'",
-        "lint:fix": "solhint --fix 'src/**/*.sol'"
+        "lint:fix": "solhint --fix 'src/**/*.sol'",
+        "chain": "anvil --config-out localhost.json",
+        "deploy": "make deploy-local"
     }
   }
