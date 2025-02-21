@@ -3,14 +3,10 @@ pragma solidity ^0.8.18;
 
 import { Setup, IFactory } from "../utils/Setup.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-// import {IStrategyInterface} from "@tokenized-strategy/interfaces/IStrategyInterface.sol";
 import {IStrategyInterface} from "../../interfaces/IStrategyInterface.sol";
-
 
 import {ITokenizedStaker} from "@periphery/Bases/Staker/ITokenizedStaker.sol";
 import {SimpleTokenizedStaker} from "./SimpleTokenizedStaker.sol";
-
-// import {MockTokenizedStaker, ITokenizedStaker} from "../mocks/MockTokenizedStaker.sol";
 
 contract SimpleTokenizedStakerTest is Setup {
     ITokenizedStaker public staker;
@@ -24,7 +20,7 @@ contract SimpleTokenizedStakerTest is Setup {
     function setUp() public override {
         super.setUp();
 
-        asset = ERC20(tokenAddrs["USDT"]);
+        asset = ERC20(tokenAddrs["USDC"]);
 
         rewardToken = ERC20(tokenAddrs["YFI"]);
         rewardToken2 = ERC20(tokenAddrs["WETH"]);
