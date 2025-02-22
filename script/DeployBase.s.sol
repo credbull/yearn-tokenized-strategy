@@ -2,8 +2,10 @@
 
 pragma solidity ^0.8.20;
 
-import {ERC20} from "@tokenized-strategy/BaseStrategy.sol";
-import {TomlConfig} from "@credbull-script/TomlConfig.s.sol";
+import { ITokenizedStrategy } from "@tokenized-strategy/interfaces/ITokenizedStrategy.sol";
+import { BaseStrategy, ERC20 } from "@tokenized-strategy/BaseStrategy.sol";
+
+import { TomlConfig } from "@credbull-script/TomlConfig.s.sol";
 
 import { stdToml } from "forge-std/StdToml.sol";
 import { Script } from "forge-std/Script.sol";
@@ -60,5 +62,19 @@ abstract contract DeployBase is TomlConfig {
         string memory path = string.concat(vm.projectRoot(), "/lib/credbull-defi/packages/contracts/resource/", environment, ".toml");
         console2.log(string.concat("Loading toml configuration from: ", path));
         return vm.readFile(path);
+    }
+
+    function _init(BaseStrategy baseStrategy, YearnAuth memory yearnAuth) internal {
+
+        ITokenizedStrategy staker = ITokenizedStrategy(address(baseStrategy));
+
+        vm.startBroadcast();
+
+        staker.setKeeper(yearnAuth.keeper);
+        staker.setPerformanceFeeRecipient(yearnAuth.perfFeeRecipient);
+        staker.setPendingManagement(yearnAuth.management);
+        staker.setEmergencyAdmin(yearnAuth.emergencyAdmin);
+
+        vm.stopBroadcast();
     }
 }

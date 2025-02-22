@@ -1,18 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import { Setup, IFactory } from "../utils/Setup.sol";
 import { IStrategyInterface } from "../../interfaces/IStrategyInterface.sol";
-
-import { ITokenizedStaker } from "@periphery/Bases/Staker/ITokenizedStaker.sol";
-import { SimpleTokenizedStaker } from "../../spikes/SimpleTokenizedStaker.sol";
 import { ManualYieldStrategy } from "../../spikes/ManualYieldStrategy.sol";
-import { BaseStrategy, ERC20 } from "@tokenized-strategy/BaseStrategy.sol";
 import { ITokenizedStrategy } from "@tokenized-strategy/interfaces/ITokenizedStrategy.sol";
 
 import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-import { console2 } from "forge-std/console2.sol";
+import { Setup } from "../utils/Setup.sol";
 
 contract ManualYieldStrategyTest is Setup {
     using SafeERC20 for ERC20;

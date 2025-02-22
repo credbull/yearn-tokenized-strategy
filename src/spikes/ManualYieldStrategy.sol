@@ -4,9 +4,6 @@ pragma solidity ^0.8.18;
 import { BaseStrategy, ERC20 } from "@tokenized-strategy/BaseStrategy.sol";
 import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import { Context } from "@openzeppelin/contracts/utils/Context.sol";
-// import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-
-import { console2 } from "forge-std/console2.sol";
 
 /*
  *  This contract should be inherited and the three main abstract methods
@@ -23,15 +20,15 @@ contract ManualYieldStrategy is BaseStrategy, Context {
         string memory _name
     ) BaseStrategy(_asset, _name) {}
 
-    /// @dev called during every deposit into your strategy to allow it to deploy the underlying asset deposited into the yield source.
-    function _deployFunds(uint256) internal override {
-        // manual process
-    }
+    /// @notice called during every deposit into your strategy to allow it to deploy the underlying asset deposited into the yield source.
+    /// @dev - this will be a manual process in this strategy
+    // solhint-disable-next-line no-empty-blocks
+    function _deployFunds(uint256) internal override {}
 
-    // @dev called during withdraws from your strategy if there is not sufficient idle asset to service the full withdrawal.
-    function _freeFunds(uint256) internal override {
-        // manual process
-    }
+    /// @notice called during withdraws from your strategy if there is not sufficient idle asset to service the full withdrawal.
+    /// @dev - this will be a manual process in this strategy
+    // solhint-disable-next-line no-empty-blocks
+    function _freeFunds(uint256) internal override {}
 
     /// @notice repay loan back to the strategy (with or without yield)
     function repay(uint256 _tokenAmount) public onlyManagement {
