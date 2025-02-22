@@ -3,14 +3,17 @@ pragma solidity ^0.8.18;
 
 import { TokenizedStaker } from "@periphery/Bases/Staker/TokenizedStaker.sol";
 import { ITokenizedStaker } from "@periphery/Bases/Staker/ITokenizedStaker.sol";
-import "../../../script/Deploy.s.sol";
+
+import { DeploySimpleTokenizedStaker } from "../../../script/DeploySimpleTokenizedStaker.s.sol";
+import { DeployBase } from "../../../script/DeployBase.s.sol";
+
 import {Test} from "forge-std/Test.sol";
 
-contract DeployTest is Test {
+contract DeploySimpleTokenizedStakerTest is Test {
 
-    function test__Deploy__Deploy() public {
+    function test__DeploySimpleTokenizedStaker__Deploy() public {
 
-        Deploy.YearnAuth memory yearnAuth = Deploy.YearnAuth({
+        DeployBase.YearnAuth memory yearnAuth = DeployBase.YearnAuth({
             governance: makeAddr("governance"), // not used in Strategy
             emergencyAdmin: makeAddr("emergencyAdmin"),
             management: makeAddr("management"),
@@ -18,7 +21,7 @@ contract DeployTest is Test {
             perfFeeRecipient: makeAddr("perfFeeRecipient")
         });
 
-        Deploy deploy = new Deploy();
+        DeploySimpleTokenizedStaker deploy = new DeploySimpleTokenizedStaker();
         ITokenizedStaker staker = ITokenizedStaker(
             address(deploy.run(yearnAuth))
         );

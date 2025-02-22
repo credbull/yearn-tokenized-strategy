@@ -12,7 +12,7 @@ inspect :; forge inspect ${contract} storage-layout --pretty
 # specify which fork to use. set this in our .env
 # if we want to test multiple forks in one go, remove this as an argument below
 FORK_URL := ${ARBI_RPC_URL} # BASE_RPC_URL, ETH_RPC_URL, ARBI_RPC_URL
-DEPLOY_SCRIPT ?= script/Deploy.s.sol:Deploy
+DEPLOY_SCRIPT ?= script/DeploySimpleTokenizedStaker.s.sol:DeploySimpleTokenizedStaker
 
 # if we want to run only matching tests, set that here
 test := test_
