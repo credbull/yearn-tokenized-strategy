@@ -11,3 +11,6 @@
 [submodule "lib/credbull-defi"]
 	path = lib/credbull-defi
 	url = https://github.com/credbull/credbull-defi
+[submodule "lib/forge-std"]
+	path = lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
