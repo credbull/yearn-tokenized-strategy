@@ -2,8 +2,9 @@
 
 pragma solidity ^0.8.20;
 
-import {SimpleTokenizedStaker} from "../src/spikes/SimpleTokenizedStaker.sol";
-import {ITokenizedStaker} from "@periphery/Bases/Staker/ITokenizedStaker.sol";
+import { SimpleTokenizedStaker } from "../src/spikes/SimpleTokenizedStaker.sol";
+import { ITokenizedStaker } from "@periphery/Bases/Staker/ITokenizedStaker.sol";
+import { TokenizedStaker } from "@periphery/Bases/Staker/TokenizedStaker.sol";
 
 import {ERC20} from "@tokenized-strategy/BaseStrategy.sol";
 import {TomlConfig} from "@credbull-script/TomlConfig.s.sol";
@@ -11,7 +12,6 @@ import {TomlConfig} from "@credbull-script/TomlConfig.s.sol";
 import { stdToml } from "forge-std/StdToml.sol";
 import { Script } from "forge-std/Script.sol";
 import { console2 } from "forge-std/console2.sol";
-import {TokenizedStaker} from "../lib/tokenized-strategy-periphery/src/Bases/Staker/TokenizedStaker.sol";
 
 contract Deploy is TomlConfig {
     using stdToml for string;
