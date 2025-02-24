@@ -53,6 +53,8 @@ contract ManualYieldStrategy is BaseStrategy, Context {
         ERC20(_tokenAddress).safeTransfer(TokenizedStrategy.management(), _tokenAmount);
     }
 
+    /// and return a full accounting of a trusted amount denominated in the underlying asset the strategy holds.
+    // TODO - should we include the borrowed amount in totalAssets?  if not, the APY will be choppy deposit -> 0 -> deposit + yield -> 0 ...
     function _harvestAndReport()
         internal
         override
