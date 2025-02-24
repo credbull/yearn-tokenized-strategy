@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import { BaseStrategy, ERC20 } from "@tokenized-strategy/BaseStrategy.sol";
-import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import { Context } from "@openzeppelin/contracts/utils/Context.sol";
+import {BaseStrategy, ERC20} from "@tokenized-strategy/BaseStrategy.sol";
+import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import {Context} from "@openzeppelin/contracts/utils/Context.sol";
 
 /*
  *  This contract should be inherited and the three main abstract methods
@@ -11,7 +11,7 @@ import { Context } from "@openzeppelin/contracts/utils/Context.sol";
  *  the Strategy to the particular needs it has to generate yield. There are
  *  other optional methods that can be implemented to further customize
  *  the strategy if desired.
-*/
+ */
 contract ManualYieldStrategy is BaseStrategy, Context {
     using SafeERC20 for ERC20;
 
@@ -50,7 +50,10 @@ contract ManualYieldStrategy is BaseStrategy, Context {
         address _tokenAddress,
         uint256 _tokenAmount
     ) public onlyManagement {
-        ERC20(_tokenAddress).safeTransfer(TokenizedStrategy.management(), _tokenAmount);
+        ERC20(_tokenAddress).safeTransfer(
+            TokenizedStrategy.management(),
+            _tokenAmount
+        );
     }
 
     /// and return a full accounting of a trusted amount denominated in the underlying asset the strategy holds.

@@ -28,7 +28,10 @@ contract ManualYieldStrategyTest is Setup {
 
         asset = ERC20(tokenAddrs["USDC"]);
 
-        manualStrategy = new ManualYieldStrategy(address(asset), "ManualYieldStrategy 20250221");
+        manualStrategy = new ManualYieldStrategy(
+            address(asset),
+            "ManualYieldStrategy 20250221"
+        );
         tokenizedStrategy = ITokenizedStrategy(address(manualStrategy));
 
         tokenizedStrategy.setKeeper(keeper);
@@ -50,13 +53,24 @@ contract ManualYieldStrategyTest is Setup {
         vm.stopPrank();
     }
 
-    function reportAndAssert(ReportResult memory expectedReportResult, string memory assertMsg) public {
-        assertEq(asset.balanceOf(address(manualStrategy)), expectedReportResult.balance, assertMsg);
+    function reportAndAssert(
+        ReportResult memory expectedReportResult,
+        string memory assertMsg
+    ) public {
+        assertEq(
+            asset.balanceOf(address(manualStrategy)),
+            expectedReportResult.balance,
+            assertMsg
+        );
 
         vm.startPrank(address(manualStrategy));
         uint256 newTotalAssets = manualStrategy.harvestAndReport();
         vm.stopPrank();
-        assertEq(newTotalAssets, expectedReportResult.balance, string.concat(assertMsg, " - harvestAndReport assets"));
+        assertEq(
+            newTotalAssets,
+            expectedReportResult.balance,
+            string.concat(assertMsg, " - harvestAndReport assets")
+        );
 
         // report() also calls harvestAndReport() - so we have harvested twice, but should be fine.
         // TODO - should we call report here instead?  report itself calls harvestAndReport()
@@ -64,19 +78,34 @@ contract ManualYieldStrategyTest is Setup {
         (uint256 profit, uint256 loss) = tokenizedStrategy.report();
         vm.stopPrank();
 
-        assertEq(profit, expectedReportResult.profit, string.concat(assertMsg, " - report profit"));
-        assertEq(loss, expectedReportResult.loss, string.concat(assertMsg, " - report loss"));
+        assertEq(
+            profit,
+            expectedReportResult.profit,
+            string.concat(assertMsg, " - report profit")
+        );
+        assertEq(
+            loss,
+            expectedReportResult.loss,
+            string.concat(assertMsg, " - report loss")
+        );
     }
 
     function test__ManualYieldStrategy___BorrowAndRepay() public {
         uint256 initialBalance = 0;
-        reportAndAssert(ReportResult(0,0,0), "report wrong on init");
+        reportAndAssert(ReportResult(0, 0, 0), "report wrong on init");
 
         // mint some deposits into strategy
         uint256 depositAmount = 1_000e18;
-        mintAndDepositIntoStrategy(IStrategyInterface(address(manualStrategy)), user, depositAmount);
+        mintAndDepositIntoStrategy(
+            IStrategyInterface(address(manualStrategy)),
+            user,
+            depositAmount
+        );
 
-        reportAndAssert(ReportResult(depositAmount,0,0), "report wrong after deposit");
+        reportAndAssert(
+            ReportResult(depositAmount, 0, 0),
+            "report wrong after deposit"
+        );
 
         // ========================== borrow ==========================
         uint256 prevManagementBalance = asset.balanceOf(address(management));
@@ -91,22 +120,34 @@ contract ManualYieldStrategyTest is Setup {
         );
 
         // TODO - balance should show balance() + borrowedAmount(), not zero here
-        reportAndAssert(ReportResult(0,0,depositAmount), "report wrong after borrow");
+        reportAndAssert(
+            ReportResult(0, 0, depositAmount),
+            "report wrong after borrow"
+        );
 
         // ========================== repay partial ==========================
         uint256 partialRepayAmount = 250e18;
         repay(partialRepayAmount);
-        reportAndAssert(ReportResult(partialRepayAmount,partialRepayAmount,0), "report wrong after partial repayment");
+        reportAndAssert(
+            ReportResult(partialRepayAmount, partialRepayAmount, 0),
+            "report wrong after partial repayment"
+        );
 
         // ========================== repay remainder ==========================
         uint256 remainderRepayAmount = depositAmount - partialRepayAmount;
         repay(remainderRepayAmount);
-        reportAndAssert(ReportResult(depositAmount,remainderRepayAmount,0), "report wrong after remainder repayment");
+        reportAndAssert(
+            ReportResult(depositAmount, remainderRepayAmount, 0),
+            "report wrong after remainder repayment"
+        );
 
         // ========================== repay with yield ==========================
         uint256 yield = depositAmount / 100; // mimic 1% yield
         airdrop(asset, management, yield);
         repay(yield);
-        reportAndAssert(ReportResult(depositAmount + yield,yield,0), "report wrong after yield");
+        reportAndAssert(
+            ReportResult(depositAmount + yield, yield, 0),
+            "report wrong after yield"
+        );
     }
 }

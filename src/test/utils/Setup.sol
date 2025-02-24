@@ -156,7 +156,9 @@ contract Setup is ExtendedTest, IEvents {
     }
 
     function _setTokenAddrs() internal {
-        block.chainid == 42161 ? _setTokenAddrsArbitrum() : _setTokenAddrsEthereum();
+        block.chainid == 42161
+            ? _setTokenAddrsArbitrum()
+            : _setTokenAddrsEthereum();
     }
 
     // arbitrum mainnet

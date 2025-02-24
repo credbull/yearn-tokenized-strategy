@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import { Setup, IFactory } from "../utils/Setup.sol";
+import {Setup, IFactory} from "../utils/Setup.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {IStrategyInterface} from "../../interfaces/IStrategyInterface.sol";
 
@@ -27,7 +27,10 @@ contract SimpleTokenizedStakerTest is Setup {
 
         staker = ITokenizedStaker(
             address(
-                new SimpleTokenizedStaker(address(asset), "SimpleTokenizedStaker 20250221")
+                new SimpleTokenizedStaker(
+                    address(asset),
+                    "SimpleTokenizedStaker 20250221"
+                )
             )
         );
 
@@ -92,9 +95,15 @@ contract SimpleTokenizedStakerTest is Setup {
         staker.addReward(address(0), management, duration);
     }
 
-    function test__SimpleTokenizedStaker__TokenizedStaker_notifyRewardAmount() public {
+    function test__SimpleTokenizedStaker__TokenizedStaker_notifyRewardAmount()
+        public
+    {
         uint256 amount = 1_000e18;
-        mintAndDepositIntoStrategy(IStrategyInterface(address(staker)), user, amount);
+        mintAndDepositIntoStrategy(
+            IStrategyInterface(address(staker)),
+            user,
+            amount
+        );
 
         assertEq(staker.rewardPerToken(address(rewardToken)), 0);
         assertEq(staker.lastTimeRewardApplicable(address(rewardToken)), 0);
@@ -149,7 +158,11 @@ contract SimpleTokenizedStakerTest is Setup {
 
     function test__SimpleTokenizedStaker__TokenizedStaker_getReward() public {
         uint256 amount = 1_000e18;
-        mintAndDepositIntoStrategy(IStrategyInterface(address(staker)), user, amount);
+        mintAndDepositIntoStrategy(
+            IStrategyInterface(address(staker)),
+            user,
+            amount
+        );
         uint256 prevRewardToken2Balance = rewardToken2.balanceOf(user);
 
         // Add multiple reward tokens
@@ -177,14 +190,23 @@ contract SimpleTokenizedStakerTest is Setup {
         staker.getReward();
 
         assertEq(rewardToken.balanceOf(user), rewardAmount / 2);
-        assertEq(rewardToken2.balanceOf(user), rewardAmount / 2 + prevRewardToken2Balance);
+        assertEq(
+            rewardToken2.balanceOf(user),
+            rewardAmount / 2 + prevRewardToken2Balance
+        );
         assertEq(staker.rewards(user, address(rewardToken)), 0);
         assertEq(staker.rewards(user, address(rewardToken2)), 0);
     }
 
-    function test__SimpleTokenizedStaker__TokenizedStaker_getOneReward() public {
+    function test__SimpleTokenizedStaker__TokenizedStaker_getOneReward()
+        public
+    {
         uint256 amount = 1_000e18;
-        mintAndDepositIntoStrategy(IStrategyInterface(address(staker)), user, amount);
+        mintAndDepositIntoStrategy(
+            IStrategyInterface(address(staker)),
+            user,
+            amount
+        );
         uint256 prevRewardToken2Balance = rewardToken2.balanceOf(user);
 
         // Add multiple reward tokens
@@ -221,7 +243,11 @@ contract SimpleTokenizedStakerTest is Setup {
         uint16 protocolFee = 1_000;
         setFees(protocolFee, performanceFee);
 
-        mintAndDepositIntoStrategy(IStrategyInterface(address(staker)), user, amount);
+        mintAndDepositIntoStrategy(
+            IStrategyInterface(address(staker)),
+            user,
+            amount
+        );
 
         uint256 rewardAmount = 100e18;
         airdrop(rewardToken, management, rewardAmount);
