@@ -5,6 +5,8 @@ import {BaseStrategy, ERC20} from "@tokenized-strategy/BaseStrategy.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {Context} from "@openzeppelin/contracts/utils/Context.sol";
 
+import { console2 } from "forge-std/console2.sol";
+
 /*
  *  This contract should be inherited and the three main abstract methods
  *  `_deployFunds`, `_freeFunds` and `_harvestAndReport` implemented to adapt
@@ -14,6 +16,8 @@ import {Context} from "@openzeppelin/contracts/utils/Context.sol";
  */
 contract ManualYieldStrategy is BaseStrategy, Context {
     using SafeERC20 for ERC20;
+
+    uint256 public _borrowedAmount = 0;
 
     constructor(
         address _asset,
@@ -33,11 +37,27 @@ contract ManualYieldStrategy is BaseStrategy, Context {
     /// @notice repay loan back to the strategy (with or without yield)
     function repay(uint256 _tokenAmount) public onlyManagement {
         asset.safeTransferFrom(_msgSender(), address(this), _tokenAmount);
+
+        // overpay the loan - e.g. including yield
+        uint256 newBorrowedAmount = _tokenAmount >= _borrowedAmount ? 0 : _borrowedAmount - _tokenAmount;
+
+        _updateBorrowedAmount(newBorrowedAmount);
     }
 
     /// @notice borrow from the strategy (to manually invest)
     function borrow(uint256 _tokenAmount) public onlyManagement {
         recoverERC20(address(asset), _tokenAmount);
+
+        _updateBorrowedAmount(_borrowedAmount + _tokenAmount);
+    }
+
+    /// @notice borrow from the strategy (to manually invest)
+    function _updateBorrowedAmount(uint256 _newBorrowedAmount) internal {
+        uint256 prevBorrowedAmount = _borrowedAmount;
+
+        _borrowedAmount = _newBorrowedAmount;
+
+        // TODO - emit an event here
     }
 
     /**
@@ -63,6 +83,6 @@ contract ManualYieldStrategy is BaseStrategy, Context {
         override
         returns (uint256 _totalAssets)
     {
-        _totalAssets = asset.balanceOf(address(this));
+        _totalAssets = asset.balanceOf(address(this)) + _borrowedAmount;
     }
 }
